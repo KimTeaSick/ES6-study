@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>반응속도</title>
+    <style>
+        #screen {
+            width: 300px;
+            height: 200px;
+            text-align: center;
+            user-select: none;
+        }
+
+        #screen.waiting {
+            background-color: aqua;
+        }
+
+        #screen.ready {
+            background-color: red;
+            color: azure;
+        }
+
+        #screen.now {
+            background-color: greenyellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="screen" class="waiting">클릭해서 시작하세요</div>
+    <div id="result"></div>
+    <script>
+        const $screen = document.querySelector('#screen');
+        const $result = document.querySelector('#result');
+        let startTime;
+        let endTime;
+        const resultTime = [];
+
+        $screen.addEventListener('click', (event) => {
+            if (event.target.classList.contains('waiting')) { //classList.contains(포함된) add(추가) replace(기존, 수정) remove(삭제)
+                $screen.classList.replace('waiting', 'ready');
+                $screen.textContent = '초록색이 되면 클릭해 주세요';
+                timeoutId = setTimeout(() => {
+                    startTime = new Date();
+                    $screen.classList.replace('ready', 'now');
+                    $screen.textContent = ' 클릭해 주세요.';
+                }, Math.floor( Math.random() * 9 ) * 100)
+            } else if (event.target.classList.contains('ready')) {
+                clearTimeout(timeoutId);
+                $screen.classList.replace('ready', 'waiting');
+                $result.textContent = '너무 성급하시네요';
+                
+            } else if (event.target.classList.contains('now')) {
+                endTime = new Date();
+                let current = endTime - startTime;
+                resultTime.push(current);
+                const average = Math.floor(resultTime.reduce((a,c) => a + c) / resultTime.length);
+                $result.textContent = `${current}, 평균 ${average}`;
+                startTime = null;
+                endTime   = null;
+                $screen.classList.replace('now', 'waiting');
+                $screen.textContent = ' 클릭하세요.';
+                resultTime.sort((a, b) => a - b);
+            }
+        })
+        
+
+    </script>
+</body>
+
+</html>

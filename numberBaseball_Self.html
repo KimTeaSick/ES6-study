@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form">
+        <input type="text" id="input">
+        <button>확인</button>
+    </form>
+    <div id='logs'></div>
+    <script>
+        const $input = document.querySelector("#input");
+        const $form = document.querySelector("#form");
+        const $logs = document.querySelector("#logs");
+        const myDeck = [];
+        for(var i = 0; i < 9; n += 1)
+            
+        let number = 0;
+
+        console.log(myDeck);
+
+        const attack = () => {
+            const attackNum = $input.value;
+            $log.value = attackNum;
+            console.log(attackNum);
+            while (true) {
+                switch (attackNum) {
+                    case myDeck === attackNum:
+                        alert('공격자가 승리하였습니다.');
+                    
+                }
+                number++
+                if (number >= 10)
+                    alert('공격자가 패배했습니다')
+                    break;
+            }
+        }
+
+        document.querySelector("input").addEventListener('submit', attack);
+
+    </script>
+</body>
+
+</html>

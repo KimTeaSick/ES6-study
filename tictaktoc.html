@@ -1,0 +1,116 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const { body } = document;
+        //array.flat(2차원 배열 1차원으로) every(모든 조건이 충족되야 true) some(하나라도 충족하면 true)
+        const $table = document.createElement('table');
+        const $result = document.createElement('div');
+        let turn = 'o';
+        const rows = [];
+
+        const checkWinner = (target) => {
+            const rowIndex = target.parentNode.rowIndex;
+            const cellIndex = target.cellIndex;
+
+            // 세 칸 다 채워졌나?
+            let hasWinner = false;
+            // 가로줄 검사
+            if (
+                rows[rowIndex][0].textContent === turn &&
+                rows[rowIndex][1].textContent === turn &&
+                rows[rowIndex][2].textContent === turn
+            ) {
+                hasWinner = true;
+            }
+            // 세로줄 검사
+            if (
+                rows[0][cellIndex].textContent === turn &&
+                rows[1][cellIndex].textContent === turn &&
+                rows[2][cellIndex].textContent === turn
+            ) {
+                hasWinner = true;
+            }
+            // 대각선 검사
+            if (
+                rows[0][0].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][2].textContent === turn
+            ) {
+                hasWinner = true;
+            }
+            if (
+                rows[0][2].textContent === turn &&
+                rows[1][1].textContent === turn &&
+                rows[2][0].textContent === turn
+            ) {
+                hasWinner = true;
+            }
+            return hasWinner;
+        };
+
+        const callback = (event) => {
+            //event.stopPropagtion(); 버블링 막기
+            if (event.target.textContent !== '') {
+                console.log('빈칸이 아닙니다');
+                return;
+                //event.currentTarget; td가 아닌 table을 클릭 하고 싶을 때
+            }
+            console.log('빈칸입니다');
+            event.target.textContent = turn;
+            const hasWinner = checkWinner(event.target);
+            if (hasWinner) {
+                $result.textContent = `${turn}님이 승리!`;
+                $table.removeEventListener('click', callback);
+                return;
+            }
+            // 무승부 검사
+            const draw = rows.flat().every((cell) => cell.textContent);
+            if (draw) {
+                $result.textContent = `무승부`;
+                return;
+            }
+            turn = turn === 'x' ? 'o' : 'x';
+        }
+        for (let i = 0; i < 3; i++) {
+            rows.push([]);
+        }
+
+        for (let i = 0; i < 3; i++) {
+            const $tr = document.createElement('tr');
+            const cells = [];
+
+            for (let i = 0; i < 3; i++) {
+                const $td = document.createElement('td');
+                cells.push($td);
+                $tr.append($td)
+            }
+            $table.append($tr);
+            rows.push(cells);
+        }
+        $table.addEventListener('click', callback);
+        document.body.append($table);
+        document.body.append($result);
+    </script>
+</body>
+
+</html>
